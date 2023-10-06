@@ -1,0 +1,117 @@
+import java.util.concurrent.TimeUnit;
+import java.lang.Math;
+import java.util.Random;
+
+//Please Save the filename as MergeSort.Java.   Thank youuuu :))
+
+public class MergeSort {
+    public static void merge(int[] array1, int[] array2, int left, int mid, int right) {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+        int[] Lx = new int[n1];
+        int[] Ly = new int[n1];
+        int[] Rx = new int[n2];
+        int[] Ry = new int[n2];
+
+        for (int i = 0; i < n1; i++) {
+            Lx[i] = array1[left + i];
+            Ly[i] = array2[left + i];
+        }
+        for (int i = 0; i < n2; i++) {
+            Rx[i] = array1[mid + 1 + i];
+            Ry[i] = array2[mid + 1 + i];
+        }
+
+        int i = 0, j = 0, k = left;
+
+        while (i < n1 && j < n2) {
+            if (Lx[i] >= Rx[j]) {
+                array1[k] = Lx[i];
+                array2[k] = Ly[i];
+                i++;
+            } else {
+                array1[k] = Rx[j];
+                array2[k] = Ry[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i < n1) {
+            array1[k] = Lx[i];
+            array2[k] = Ly[i];
+            i++;
+            k++;
+        }
+
+        while (j < n2) {
+            array1[k] = Rx[j];
+            array2[k] = Ry[j];
+            j++;
+            k++;
+        }
+    }
+
+    public static void mergeSort(int[] array1, int[] array2, int left, int right) {
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+            mergeSort(array1, array2, left, mid);
+            mergeSort(array1, array2, mid + 1, right);
+            merge(array1, array2, left, mid, right);
+        }
+    }
+
+    public static void main(String[] args) {
+        long start = System.nanoTime();
+        main1(100000000);
+        long end = System.nanoTime();
+
+        System.out.println(start);
+        System.out.println(end);
+        System.out.println(end - start);
+        long elapsedTime = end-start;
+        double elapsedTimeInSecond = (double) elapsedTime / 1_000_000_000;
+        System.out.println(elapsedTimeInSecond);
+    }
+    public static void main1(long n) {
+        int length = 40000000;
+        int[] array1 = new int[length];
+        int[] array2 = new int[length];
+        Random rand = new Random();
+
+        for (int p = 0; p < length; p++) {
+            int randomnumber = rand.nextInt(25) + 1;
+            array1[p] = randomnumber;
+        }
+
+        for (int p = 0; p < length; p++) {
+            int randomnumber = rand.nextInt(25) + 1;
+            array2[p] = randomnumber;
+        }
+
+        mergeSort(array1, array2, 0, length - 1);
+        int[] optx = new int[length];
+        int[] opty = new int[length];
+
+        for (int q = 0; q < length; q++) {
+            optx[q] = 0;
+            opty[q] = 0;
+        }
+
+        optx[0] = array1[0];
+        opty[0] = array2[0];
+        int maxx = array1[0];
+        int maxy = array2[0];
+        int indexopt = 1;
+
+        for (int m = 1; m < length; m++) {
+            if (array2[m] > maxy) {
+                maxy = array2[m];
+                optx[m] = array1[m];
+                opty[m] = array2[m];
+            }
+        }
+
+    }
+    
+}
